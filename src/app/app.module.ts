@@ -6,8 +6,15 @@ import {MatListModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
-import {MatButtonModule} from '@angular/material/button'
-
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FormsModule} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 import { AppComponent } from './app.component';
@@ -23,7 +30,8 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
 
 import {DishService} from './services/dish.service';
 import {PromotionsService} from './services/promotions.service';
-
+import {NewleaderService} from './services/newleader.service';
+import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +41,8 @@ import {PromotionsService} from './services/promotions.service';
     FooterComponent,
     HomeComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -44,11 +53,23 @@ import {PromotionsService} from './services/promotions.service';
     MatGridListModule,
     MatCardModule,
     MatButtonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatDialogModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatSlideToggleModule
     
   ],
   providers: [DishService,
-  PromotionsService],
+  PromotionsService,
+NewleaderService],
+entryComponents: [
+  LoginComponent
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

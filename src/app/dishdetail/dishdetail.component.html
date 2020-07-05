@@ -5,7 +5,7 @@ fxLayout.sm="column"
 fxLayout.xs="column"
 fxLayoutGap="10px" 
 fxLayoutGap.xs="0" >
-  <div fxFlex="40"  *ngIf="dish">
+  <div fxFlex="40"  *ngIf="dish" [@visibility]="visibility">
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -34,14 +34,14 @@ fxLayoutGap.xs="0" >
 
   
 
-  <div  fxFlex fxLayout="column" fxLayoutAlign.gt-md="space-around center" class="form-size"
+  <div  fxFlex="40" fxLayout="column" fxLayoutAlign.gt-md="space-around center" class="form-size"
 
- *ngIf="dish">  
+ *ngIf="dish" [@visibility]="visibility">  
       
           <mat-list>
             <h1>comments</h1>
             <mat-list-item *ngFor="let cmt of dish.comments">
-              <p matLine >{{cmt.coment}}</p>
+              <h4 matLine >{{cmt.coment}}</h4>
               <p matLine >{{cmt.rating}} Stars</p>
               <p matLine >-- {{cmt.author}} {{cmt.date | date}}</p>
               
@@ -77,7 +77,7 @@ fxLayoutGap.xs="0" >
     <mat-spinner></mat-spinner>
     <h4>Loding...Please wait</h4>
   </div>
-  <div fxFlex [hidden]="errMess">
+  <div fxFlex *ngIf="errMess">
     <h2>Error</h2>
     <h4>{{errMess}}</h4>
   </div>

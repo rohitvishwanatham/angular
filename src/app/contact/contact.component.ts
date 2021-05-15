@@ -1,7 +1,8 @@
 import { Component, OnInit ,ViewChild } from '@angular/core';
 import {FormBuilder,FormGroup,Validators} from '@angular/forms';
 import {Feedback,Contacttype} from '../shared/feedback';
-import {flyInOut} from '../animations/app.animation';
+import {flyInOut,expand} from '../animations/app.animation';
+import {FeedbackService} from '../services/feedback.service';
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -11,13 +12,20 @@ import {flyInOut} from '../animations/app.animation';
     'style':'display:block;'
   },
   animations:[
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
   feedbackForm :FormGroup;
   feedback:Feedback;
   contacttype= Contacttype;
+  fbo:Feedback;
+  formerr:string;
+  loder:boolean;
+  form:boolean;
+  submission:boolean;
+
   @ViewChild('fform') feedbackFormDirective;
   formErrors={
     'firstname':'',
@@ -47,13 +55,16 @@ export class ContactComponent implements OnInit {
 
     }
   };
-  constructor(private fb:FormBuilder) { 
+  constructor(private fb:FormBuilder,
+    private fbs:FeedbackService) { 
     this.createForm();
   }
 
   ngOnInit() {
   }
   createForm(){
+    this.loder=false;
+    this.form=true;
     this.feedbackForm= this.fb.group({
       firstname:['',[Validators.required,Validators.minLength(2),Validators.maxLength(25)]],
       lastname:['',[Validators.required,Validators.minLength(2),Validators.maxLength(25)]],
@@ -67,6 +78,7 @@ export class ContactComponent implements OnInit {
     this.feedbackForm.valueChanges
     .subscribe(data=>this.onValueChanged(data));
     this.onValueChanged();//reset from validation messages
+    
   }
   onValueChanged(data?: any){
     if(!this.feedbackForm){
@@ -95,10 +107,19 @@ export class ContactComponent implements OnInit {
 
     }
   }
+  
+
   onSubmit(){
     this.feedback =this.feedbackForm.value;
-    console.log(this.feedback);
+   this.loder=true;
+   this.fbo=null;
+    this.fbs.submitFeedback(this.feedback)
+    .subscribe(fb=> {this.fbo=fb;this.submission=true; this.form=false;setTimeout(()=>{this.form=true;this.submission=false;this.loder=false},5000)},
+      errmess=>{this.loder=false;this.formerr=errmess});
+      
+      
     this.feedbackForm.reset({
+      
       firstname:'',
       lastname:'',
       telnum:0,
@@ -109,6 +130,9 @@ export class ContactComponent implements OnInit {
 
     });
     this.feedbackFormDirective.resetForm();
+    
+   
+    
   }
 
 }
